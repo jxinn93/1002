@@ -1,0 +1,135 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Q1 {
+    public static void main(String args[]) {
+        Scanner input = new Scanner(System.in);
+        final int matrices1[][] = new int[3][3];
+        final int matrices2[][] = new int[3][3];
+        final int rows = matrices1.length;
+        final int columns = matrices1[0].length;
+
+        System.out.print("Enter the first matrices: ");
+        for (int i = 0; i < matrices1.length; i++) {
+            for (int j = 0; j < matrices1[i].length; j++) {
+                matrices1[i][j] = input.nextInt();
+            }
+        }
+        for (int i = 0; i < matrices1.length; i++) {
+            System.out.println(Arrays.toString(matrices1[i]));
+        }
+
+        System.out.print("Enter the second matrices: ");
+        for (int i = 0; i < matrices2.length; i++) {
+            for (int j = 0; j < matrices2[i].length; j++) {
+                matrices2[i][j] = input.nextInt();
+            }
+        }
+        for (int i = 0; i < matrices2.length; i++) {
+            System.out.println(Arrays.toString(matrices2[i]));
+        }
+
+        System.out.println("Result of the Addition");
+        int[][] result1 = addition(matrices1, matrices2, rows, columns);
+        printMatrix(result1);
+
+        System.out.println("Result of the Subtraction");
+        int[][] result2 = subtraction(matrices1, matrices2, rows, columns);
+        printMatrix(result2);
+
+        System.out.println("Result of the Multiplication");
+        int[][] result3 = multiplication(matrices1, matrices2, rows, columns);
+        printMatrix(result3);
+
+         
+        System.out.print("Enter a matrix: ");
+        int det[][] = new int[3][3];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                det[i][j] = input.nextInt();
+            }
+        }
+        for (int i = 0; i < rows; i++) {
+            System.out.println(Arrays.toString(det[i]));
+        }
+        double result4 = determinant(det, rows, columns);
+        System.out.println("Determinant: " + result4);
+
+        if (result4 != 0) {
+            double[][] inverseMatrix = Inverse(det, result4);
+            System.out.println("Inverse Matrix: ");
+            printMatrix(inverseMatrix);
+        } else {
+            System.out.println("Invalid Matrix to find its inverse");
+        }
+    }
+
+    public static int[][] addition(int matrices1[][], int matrices2[][], int rows, int columns) {
+        int[][] result1 = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result1[i][j] = matrices1[i][j] + matrices2[i][j];
+            }
+        }
+        return result1;
+    }
+
+    public static int[][] subtraction(int matrices1[][], int matrices2[][], int rows, int columns) {
+        int[][] result2 = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result2[i][j] = matrices1[i][j] - matrices2[i][j];
+            }
+        }
+        return result2;
+    }
+
+    public static int[][] multiplication(int matrices1[][], int matrices2[][], int rows, int columns) {
+        int[][] result3 = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                for (int h = 0; h < columns; h++) {
+                    result3[i][j] += matrices1[i][h] * matrices2[h][j];
+                }
+            }
+        }
+        return result3;
+    }
+
+    public static double determinant(int det [][],int rows, int columns) {
+       double result4 = det[0][0] * (det[1][1] * det[2][2] - det[1][2] * det[2][1])
+                - det[0][1] * (det[1][0] * det[2][2] - det[1][2] * det[2][0])
+                + det[0][2] * (det[1][0] * det[2][1] - det[1][1] * det[2][0]);
+        return result4;
+    }
+
+    private static double[][] Inverse(int[][] det, double result4) {
+        double[][] inverseMatrix = new double[3][3];
+
+        // Calculate the inverse using the formula
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                inverseMatrix[i][j] = ((det[(j + 1) % 3][(i + 1) % 3] * det[(j + 2) % 3][(i + 2) % 3])
+                        - (det[(j + 1) % 3][(i + 2) % 3] * det[(j + 2) % 3][(i + 1) % 3])) / result4 ;
+            }
+        }
+
+        return inverseMatrix;
+    }
+    
+
+    private static void printMatrix(int matrix[][]) {
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.println(Arrays.toString(matrix[i]));
+        }
+    }
+
+    private static void printMatrix(double matrix[][]) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.printf("%.2f ", matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
+}
